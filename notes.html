@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 id="notelist"></h1>
+<script type="text/javascript">
+let natural = ['A', 'B', 'C', 'D','E', 'F', 'G']
+let accidentals=[]
+for(let c of natural){
+    accidentals.push(c+"#")
+    accidentals.push(c)
+    accidentals.push(c+"♭")
+}
+
+
+accidentals = accidentals.filter(v => v !== 'B#')
+accidentals = accidentals.filter(v => v !== 'C♭')
+
+accidentals = accidentals.filter(v => v !== 'E#')
+accidentals = accidentals.filter(v => v !== 'F♭')
+
+natural = natural
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+   
+accidentals = accidentals
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
+   
+    console.log(accidentals)
+    console.log(accidentals)
+document.getElementById('notelist').innerHTML =natural.join(", ")+"<span style = 'display: block;'>"+accidentals.join(", ")+"</span>";
+</script>
+</body>
+</html>
+
