@@ -3,6 +3,9 @@
 <body>
 
 <h1 id="notelist"></h1>
+<h1 id="nextnote"></h1>
+<input type="number" id="notedelay" name="notedelay" value=500>
+
 <script type="text/javascript">
 let natural = ['A', 'B', 'C', 'D','E', 'F', 'G']
 let accidentals=[]
@@ -32,6 +35,22 @@ accidentals = accidentals
     console.log(accidentals)
     console.log(accidentals)
 document.getElementById('notelist').innerHTML =natural.join(", ")+"<span style = 'display: block;'>"+accidentals.join(", ")+"</span>";
+let note=natural[Math.floor(Math.random() * natural.length)]
+document.getElementById('nextnote').innerHTML =note+" @"+(1+Math.floor(Math.random() * 6))
+let delay=parseInt(document.getElementById('notedelay').value)
+window.setTimeout(() => {
+    setNext()
+}, delay);
+
+function setNext()
+{
+    document.getElementById('nextnote').innerHTML =note+" @"+(1+Math.floor(Math.random() * 6))
+    let delay=parseInt(document.getElementById('notedelay').value)
+    window.setTimeout(() => {
+    setNext()
+}, delay);
+}
+
 </script>
 </body>
 </html>
