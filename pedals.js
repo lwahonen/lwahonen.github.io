@@ -165,10 +165,10 @@ async function openPedals(pedal_order) {
                     player.playVideo();
                 }
                 if (command == "R") {
-                    window["seek_direction"] = -1;
+                    window["seek_direction"] = -0.5;
                 }
                 if (command == "F") {
-                    window["seek_direction"] = 1;
+                    window["seek_direction"] = 0.5;
                 }
                 if (command == "S") {
                     player.pauseVideo();
