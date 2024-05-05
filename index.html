@@ -11,6 +11,15 @@
     <input type="submit" value="Search Playlists"/>
 </form>
 
+<script type="text/javascript">
+    setInterval(function () {
+            let dir = window['seek_direction'];
+            if (dir != 0 && dir != undefined && player != null) {
+                player.seekTo(player.getCurrentTime() + dir, true)
+            }
+        },
+        50);
+</script>
 
 
 </body>

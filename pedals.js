@@ -67,6 +67,7 @@ function stopVideo() {
 
 async function openPedals(pedal_order) {
     console.log("Opening pedals with order " + pedal_order);
+    window["seek_direction"] = 0;
     let device;
     try {
         const devices = await navigator.hid.requestDevice({
@@ -164,13 +165,14 @@ async function openPedals(pedal_order) {
                     player.playVideo();
                 }
                 if (command == "R") {
-
+                    window["seek_direction"] = -1;
                 }
                 if (command == "F") {
-
+                    window["seek_direction"] = 1;
                 }
                 if (command == "S") {
                     player.pauseVideo();
+                    window["seek_direction"] = 0;
                 }
             }
         });
