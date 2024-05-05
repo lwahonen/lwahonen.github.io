@@ -1,21 +1,19 @@
 var deviceIsOpen = false;
-var video_id = null;
+var videoId = null;
 
-function go_get() {
-    openPedals("RPF");
-    var search_field = document.getElementById('yourtextfield').value;
-    if (search_field.startsWith("https://youtu.be/")) {
-        video_id = search_field.substring("https://youtu.be/".length);
-        video_id = video_id.substring(0, video_id.indexOf("?"))
-        console.log("Found video id " + video_id)
-    } else if (search_field.startsWith("https://www.youtube.com/watch?v=")) {
-        video_id = search_field.substring("https://www.youtube.com/watch?v=".length);
-        if (video_id.includes("&")) {
-            video_id = video_id.substring(0, video_id.indexOf("&"))
-        }
-        console.log("Found video id " + video_id)
+function loadVideo() {
+    var videoUrl = document.getElementById('youtubeLink').value;
+    if (videoUrl.startsWith("https://youtu.be/")) {
+        videoId = videoUrl.substring("https://youtu.be/".length);
+        videoId = videoId.substring(0, videoId.indexOf("?"))
+        console.log("Found video id " + videoId)
+    } else if (videoUrl.startsWith("https://www.youtube.com/watch?")) {
+        let queryOnly = videoUrl.substring("https://www.youtube.com/watch?".length);
+        const urlParams = new URLSearchParams(queryOnly);
+        videoId = urlParams.get('v');
+        console.log("Found video id " + videoId)
     } else {
-        alert("Can't find video id from " + search_field);
+        alert("Can't find video id from " + videoUrl);
     }
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -33,7 +31,7 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '390',
         width: '640',
-        videoId: video_id,
+        videoId: videoId,
         playerVars: {
             'playsinline': 1
         },
@@ -46,23 +44,16 @@ function onYouTubeIframeAPIReady() {
 
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-    event.target.playVideo();
+    openPedals("RPF");  // Reverse - Play - Forward
 }
 
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
-var done = false;
-
 function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING && !done) {
-        setTimeout(stopVideo, 6000);
-        done = true;
+    if (event.data == YT.PlayerState.ENDED) {
+        window['seek_direction'] = 0;
     }
-}
-
-function stopVideo() {
-    player.stopVideo();
 }
 
 async function openPedals(pedal_order) {
