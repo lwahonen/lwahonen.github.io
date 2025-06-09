@@ -279,4 +279,11 @@ function convertBytes(buffer, vid, pid) {
     return toSet;
 }
 
+if (!navigator.hid) {
+    alert("WebHID API is not supported in this browser");
+}
+else {
+    console.log("WebHID API is supported in this browser");
+}
+
 
