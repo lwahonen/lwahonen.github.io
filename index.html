@@ -179,11 +179,64 @@
             border-radius: 4px;
             display: inline-block;
         }
+
+        .instruction-steps {
+            margin-top: 15px;
+        }
+
+        .instruction-steps ol {
+            margin: 10px 0 20px 20px;
+            padding-left: 0;
+        }
+
+        .instruction-steps li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .instruction-steps code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #d63384;
+        }
+
+        .screenshot-container {
+            margin: 20px 0;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .instruction-screenshot {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .screenshot-caption {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .instruction-steps p strong {
+            color: #333;
+            display: block;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>YouTube Video Player</h1>
+        <h1>YouTube Video Player with USB Pedal Support</h1>
         
         <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
         <div id="player"></div>
@@ -195,54 +248,31 @@
 
         <div class="faq-section">
             <h2>Frequently Asked Questions</h2>
-            
+                        
             <div class="faq-item">
-                <h3>What USB devices are supported?</h3>
-                <p>The following USB pedal devices are supported:</p>
-                <div class="device-list">
-                    <div class="device-item">
-                        <strong>Old VEC</strong><br>
-                        <span class="device-codes">Vendor ID: 0x05f3, Product ID: 0x00ff</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Philips (Old Version)</strong><br>
-                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x184c</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Philips</strong><br>
-                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x1844</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Philips Foot Control LFH 2330/00</strong><br>
-                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x091a</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Infinity</strong><br>
-                        <span class="device-codes">Vendor ID: 0x0e0f, Product ID: 0x0003</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Grundig Pedals</strong><br>
-                        <span class="device-codes">Vendor ID: 0x15d8, Product ID: 0x0024</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Olympus</strong><br>
-                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x0218</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Olympus RS31H (Olympus Mode)</strong><br>
-                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x025f</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>Olympus Hand Controller</strong><br>
-                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x026e</span>
-                    </div>
-                    <div class="device-item">
-                        <strong>DictaPhone Pedal</strong><br>
-                        <span class="device-codes">Vendor ID: 0x04b4, Product ID: 0x0100</span>
-                    </div>
+                <h3>What YouTube URL formats are supported?</h3>
+                <p>The player supports the following YouTube URL formats:</p>
+                <ul>
+                    <li><code>https://youtu.be/VIDEO_ID</code> (Short URL)</li>
+                    <li><code>https://www.youtube.com/watch?v=VIDEO_ID</code> (Standard URL)</li>
+                </ul>
+                
+                <p><strong>How to get a supported URL:</strong></p>
+                <ol>
+                    <li>Go to the YouTube video you want to play</li>
+                    <li>Click the "Share" button below the video</li>
+                    <li>Click "Copy" next to the URL</li>
+                    <li>Youtube will provide you with an URL that contains more information than just the video ID. That is OK, the player will use the video ID to load the video and ignore the rest.</li>
+                    <li>Paste the URL into the input field above</li>
+                    <li>Click "Load Video"</li>
+                </ol>
+                
+                <div class="screenshot-container">
+                    <img src="youtube_share.png" alt="Getting a YouTube video URL using the share button" class="instruction-screenshot">
+                    <p class="screenshot-caption">Example: Using the Share button to get a supported YouTube URL</p>
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <h3>How do I connect my USB pedal?</h3>
                 <p>1. Connect your USB pedal to your computer<br>
@@ -257,6 +287,87 @@
                 • <strong>Left pedal:</strong> Rewind/Reverse playback<br>
                 • <strong>Middle pedal:</strong> Play/Pause<br>
                 • <strong>Right pedal:</strong> Fast forward</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I find my USB device's Vendor ID and Product ID?</h3>
+                <p>To check if your USB pedal is supported, you need to find its Vendor ID and Product ID:</p>
+                <div class="instruction-steps">
+                    <p><strong>On Windows:</strong></p>
+                    <ol>
+                        <li>Connect your USB pedal to your computer</li>
+                        <li>Right-click on "This PC" and select "Manage"</li>
+                        <li>In Computer Management, select "Device Manager"</li>
+                        <li>Expand "Universal Serial Bus controllers" or look for your device under "Human Interface Devices"</li>
+                        <li>Double-click on your USB device</li>
+                        <li>Select the "Details" tab</li>
+                        <li>In the "Property" dropdown, select "Hardware IDs"</li>
+                        <li>Look for values like "VID_0911&PID_1844" - these are your Vendor ID (0911) and Product ID (1844)</li>
+                    </ol>
+                    
+                    <div class="screenshot-container">
+                        <img src="device_manager.png" alt="Finding USB Vendor and Product ID in Windows Device Manager" class="instruction-screenshot">
+                        <p class="screenshot-caption">Example: Finding Vendor ID and Product ID in Windows Device Manager</p>
+                    </div>
+                    
+                    <p><strong>On macOS:</strong></p>
+                    <ol>
+                        <li>Connect your USB pedal</li>
+                        <li>Press Command (⌘) + Space and type "System Information"</li>
+                        <li>Navigate to "USB" under "Hardware"</li>
+                        <li>Select your device to see the Vendor ID and Product ID</li>
+                    </ol>
+                    
+                    <div class="screenshot-container">
+                        <img src="system_information.png" alt="Finding USB Vendor and Product ID in macOS System Information" class="instruction-screenshot">
+                        <p class="screenshot-caption">Example: Finding Vendor ID and Product ID in macOS System Information</p>
+                    </div>
+                    
+                    <p><strong>On Linux:</strong></p>
+                    <ol>
+                        <li>Open a terminal</li>
+                        <li>Type: <code>lsusb</code></li>
+                        <li>Look for your device in the list - the format shows "ID 0911:1844" where 0911 is Vendor ID and 1844 is Product ID</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <h3>What USB devices are supported?</h3>
+                <p>The following USB pedal devices are supported:</p>
+                <div class="device-list">
+                    <div class="device-item">
+                        <strong>VEC Electronic Corporation pedals</strong><br>
+                        <span class="device-codes">Vendor ID: 0x05f3, Product ID: 0x00ff</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Various Philips pedals</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x184c</span>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x1844</span>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x091a</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Infinity</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0e0f, Product ID: 0x0003</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Grundig Pedals</strong><br>
+                        <span class="device-codes">Vendor ID: 0x15d8, Product ID: 0x0024</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Various Olympus pedals</strong><br>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x0218</span>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x025f</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Olympus Hand Controller</strong><br>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x026e</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>DictaPhone Pedal</strong><br>
+                        <span class="device-codes">Vendor ID: 0x04b4, Product ID: 0x0100</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
