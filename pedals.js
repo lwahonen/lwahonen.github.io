@@ -280,7 +280,14 @@ function convertBytes(buffer, vid, pid) {
 }
 
 if (!navigator.hid) {
-    alert("WebHID API is not supported in this browser");
+    const playerDiv = document.getElementById('player');
+    playerDiv.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #dc3545; margin-bottom: 15px;">⚠️ WebHID API Not Supported</h3>
+            <p style="color: #666; margin-bottom: 15px;">Your browser doesn't support the WebHID API, which is required for USB pedal functionality.</p>
+            <p style="color: #666;">Please use a supported browser like Chrome or Edge. <a href="https://caniuse.com/webhid" target="_blank" style="color: #667eea; text-decoration: none;">Learn more about browser support →</a></p>
+        </div>
+    `;
 }
 else {
     console.log("WebHID API is supported in this browser");
