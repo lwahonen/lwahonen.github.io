@@ -113,10 +113,6 @@ async function openPedals(pedal_order) {
                     vendorId: 0x04b4,
                     productId: 0x0100,
                 },
-                {
-                    vendorId: 0x04b4,
-                    productId: 0x0100,
-                },
             ],
         });
         device = devices[0];

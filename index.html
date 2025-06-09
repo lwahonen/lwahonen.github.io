@@ -108,6 +108,77 @@
                 width: 100%;
             }
         }
+
+        .faq-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .faq-section h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .faq-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .faq-item h3 {
+            color: #333;
+            margin: 0 0 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .faq-item p {
+            color: #555;
+            line-height: 1.6;
+            margin: 0 0 15px 0;
+        }
+
+        .device-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .device-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .device-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .device-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .device-codes {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #666;
+            background: #f1f3f4;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -121,6 +192,73 @@
             <input type="text" id="youtubeLink" placeholder="Enter YouTube URL here..."/>
             <input type="submit" value="Load Video"/>
         </form>
+
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h3>What USB devices are supported?</h3>
+                <p>The following USB pedal devices are supported:</p>
+                <div class="device-list">
+                    <div class="device-item">
+                        <strong>Old VEC</strong><br>
+                        <span class="device-codes">Vendor ID: 0x05f3, Product ID: 0x00ff</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Philips (Old Version)</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x184c</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Philips</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x1844</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Philips Foot Control LFH 2330/00</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0911, Product ID: 0x091a</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Infinity</strong><br>
+                        <span class="device-codes">Vendor ID: 0x0e0f, Product ID: 0x0003</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Grundig Pedals</strong><br>
+                        <span class="device-codes">Vendor ID: 0x15d8, Product ID: 0x0024</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Olympus</strong><br>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x0218</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Olympus RS31H (Olympus Mode)</strong><br>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x025f</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>Olympus Hand Controller</strong><br>
+                        <span class="device-codes">Vendor ID: 0x07b4, Product ID: 0x026e</span>
+                    </div>
+                    <div class="device-item">
+                        <strong>DictaPhone Pedal</strong><br>
+                        <span class="device-codes">Vendor ID: 0x04b4, Product ID: 0x0100</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How do I connect my USB pedal?</h3>
+                <p>1. Connect your USB pedal to your computer<br>
+                2. Load a YouTube video using the form above<br>
+                3. Your browser will prompt you to select the USB device<br>
+                4. Choose your pedal from the list and click "Connect"</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>What are the pedal controls?</h3>
+                <p>The default pedal configuration is <strong>R-P-F</strong> (Reverse-Play-Forward):<br>
+                • <strong>Left pedal:</strong> Rewind/Reverse playback<br>
+                • <strong>Middle pedal:</strong> Play/Pause<br>
+                • <strong>Right pedal:</strong> Fast forward</p>
+            </div>
+        </div>
     </div>
 
     <script type="text/javascript" src="pedals.js"></script>
