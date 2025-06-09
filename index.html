@@ -1,26 +1,139 @@
 <!DOCTYPE html>
 <html>
-<body>
-<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-<div id="player"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Player</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-<script type="text/javascript" src=pedals.js></script>
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
 
-<form onsubmit="loadVideo(); return false;">
-    <input type="text" id="youtubeLink"/>
-    <input type="submit" value="Load video"/>
-</form>
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
 
-<script type="text/javascript">
-    setInterval(function () {
-            let dir = window['seek_direction'];
-            if (dir != 0 && dir != undefined && player != null) {
-                player.seekTo(player.getCurrentTime() + dir, true)
+        #player {
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        #player:empty::before {
+            content: "Video player will appear here";
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        #youtubeLink {
+            width: 70%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        #youtubeLink:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
             }
-        },
-        50);
-</script>
+            
+            #youtubeLink {
+                width: 100%;
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
+            
+            input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Player</h1>
+        
+        <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+        <div id="player"></div>
 
+        <form onsubmit="loadVideo(); return false;">
+            <input type="text" id="youtubeLink" placeholder="Enter YouTube URL here..."/>
+            <input type="submit" value="Load Video"/>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="pedals.js"></script>
+
+    <script type="text/javascript">
+        setInterval(function () {
+                let dir = window['seek_direction'];
+                if (dir != 0 && dir != undefined && player != null) {
+                    player.seekTo(player.getCurrentTime() + dir, true)
+                }
+            },
+            50);
+    </script>
 
 </body>
 </html>
