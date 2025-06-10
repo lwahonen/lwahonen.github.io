@@ -21,6 +21,7 @@ function loadVideo() {
         videoId = newVideoId;
         console.log("Found video id " + videoId)
         if (player) {
+            player.pauseVideo();
             player.loadVideoById(videoId);
         }
         openPedals("RPF");  // Reverse - Play - Forward
