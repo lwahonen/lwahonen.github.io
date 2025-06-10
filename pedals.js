@@ -21,8 +21,7 @@ function loadVideo() {
         videoId = newVideoId;
         console.log("Found video id " + videoId)
         if (player) {
-            player.pauseVideo();
-            player.loadVideoById(videoId);
+            player.cueVideoById(videoId);
         }
         openPedals("RPF");  // Reverse - Play - Forward
     } else {
