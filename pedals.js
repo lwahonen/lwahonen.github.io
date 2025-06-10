@@ -35,7 +35,7 @@ function onYouTubeIframeAPIReady() {
     console.log("YouTube IFrame API is ready");
     player = new YT.Player('player', {
         height: '390',
-        width: '640',
+        width: '600',
         videoId: videoId,
         playerVars: {
             'playsinline': 1,
