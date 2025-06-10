@@ -1,39 +1,50 @@
 var deviceIsOpen = false;
 var videoId = null;
+var player = null;
 
 function loadVideo() {
     var videoUrl = document.getElementById('youtubeLink').value;
+    var newVideoId = null;
+
     if (videoUrl.startsWith("https://youtu.be/")) {
-        videoId = videoUrl.substring("https://youtu.be/".length);
-        videoId = videoId.substring(0, videoId.indexOf("?"))
-        console.log("Found video id " + videoId)
+        newVideoId = videoUrl.substring("https://youtu.be/".length);
+        if (newVideoId.includes("?")) {
+            newVideoId = newVideoId.substring(0, newVideoId.indexOf("?"));
+        }
     } else if (videoUrl.startsWith("https://www.youtube.com/watch?")) {
         let queryOnly = videoUrl.substring("https://www.youtube.com/watch?".length);
         const urlParams = new URLSearchParams(queryOnly);
-        videoId = urlParams.get('v');
+        newVideoId = urlParams.get('v');
+    }
+
+    if (newVideoId) {
+        videoId = newVideoId;
         console.log("Found video id " + videoId)
+        if (player) {
+            player.loadVideoById(videoId);
+        }
+        openPedals("RPF");  // Reverse - Play - Forward
     } else {
         alert("Can't find video id from " + videoUrl);
     }
-    // 2. This code loads the IFrame Player API code asynchronously.
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
-// 3. This function creates an <iframe> (and YouTube player)
+// This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
-var player = null;
-
 function onYouTubeIframeAPIReady() {
+    console.log("YouTube IFrame API is ready");
     player = new YT.Player('player', {
         height: '390',
         width: '640',
         videoId: videoId,
         playerVars: {
-            'playsinline': 1
+            'playsinline': 1,
+            'autoplay': 0,
+            'enablejsapi': 1,
+            'rel': 0,
+            'origin': 'https://slowriff.com',
+            'fs': 1,
+            'disablekb': 1,
         },
         events: {
             'onReady': onPlayerReady,
@@ -42,14 +53,13 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// 4. The API will call this function when the video player is ready.
+// The API will call this function when the video player is ready.
 function onPlayerReady(event) {
-    openPedals("RPF");  // Reverse - Play - Forward
+    console.log("Player is ready");
 }
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
+// The API calls this function when the player's state changes.
+// The function stops the seek/rewind when the video ends.
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
         window['seek_direction'] = 0;
@@ -57,6 +67,10 @@ function onPlayerStateChange(event) {
 }
 
 async function openPedals(pedal_order) {
+    if (deviceIsOpen) {
+        console.log("Pedals already open");
+        return;
+    }
     console.log("Opening pedals with order " + pedal_order);
     window["seek_direction"] = 0;
     let device;
@@ -117,7 +131,8 @@ async function openPedals(pedal_order) {
         });
         device = devices[0];
     } catch (error) {
-        console.log("An error occurred.");
+        console.log("An error occurred while opening pedals.");
+        console.log(error);
     }
 
     if (!device) {
@@ -291,6 +306,11 @@ if (!navigator.hid) {
 }
 else {
     console.log("WebHID API is supported in this browser");
+    // Load the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }
 
 
