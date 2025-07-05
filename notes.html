@@ -41,14 +41,16 @@ h1 {
     color: #4a90e2;
     margin: 24px 0 18px 0;
     font-weight: bold;
-    letter-spacing: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+    letter-spacing: 0;
 }
 #nextnote .string-number {
-    font-family: 'Courier New', monospace;
-    display: inline-block;
-    width: 13ch;
-    text-align: right;
-    margin-right: 8px;
+    width: 100%;
+    margin: 0;
+    text-align: center;
 }
 label, .slider-label {
     font-size: 1em;
@@ -87,6 +89,23 @@ input[type="range"] {
     font-weight: 600;
     margin: 20px 0 10px;
     color: #333;
+}
+/* --- new styles for stable, vertical next-note display --- */
+.note-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* minimal width for one-digit string number */
+.string-display { width: 3ch; }
+/* enough width for longest note (“A♭ / G#”) without forcing huge space */
+.note-only { width: 9ch; }
+.note-display .value {
+    font-family: 'Courier New', monospace;
+}
+.note-display .label {
+    font-size: 0.4em;
+    margin-top: 4px;
 }
 </style>
 </head>
@@ -174,7 +193,15 @@ let timer = null;
 function pickNote() {
     note = noteList[Math.floor(Math.random() * noteList.length)]
     let stringNum = 1 + Math.floor(Math.random() * 6)
-    document.getElementById('nextnote').innerHTML = `<span class="string-number">String => ${stringNum}</span><span class="note-name">${note} <= Note</span>`
+    document.getElementById('nextnote').innerHTML = `
+        <span class="note-display string-display">
+            <span class="value string-number">${stringNum}</span>
+            <span class="label">↑ String</span>
+        </span>
+        <span class="note-display note-only">
+            <span class="value note-name">${note}</span>
+            <span class="label">↑ Note</span>
+        </span>`
 }
 
 function setNext() {
