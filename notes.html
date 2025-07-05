@@ -36,11 +36,19 @@ h1 {
     line-height: 1.6;
 }
 #nextnote {
+    position: relative;
     font-size: 2em;
     color: #4a90e2;
     margin: 24px 0 18px 0;
     font-weight: bold;
     letter-spacing: 2px;
+}
+#nextnote .string-number {
+    font-family: 'Courier New', monospace;
+    display: inline-block;
+    width: 13ch;
+    text-align: right;
+    margin-right: 8px;
 }
 label, .slider-label {
     font-size: 1em;
@@ -166,7 +174,7 @@ let timer = null;
 function pickNote() {
     note = noteList[Math.floor(Math.random() * noteList.length)]
     let stringNum = 1 + Math.floor(Math.random() * 6)
-    document.getElementById('nextnote').innerHTML = note + " @" + stringNum
+    document.getElementById('nextnote').innerHTML = `<span class="string-number">String => ${stringNum}</span><span class="note-name">${note} <= Note</span>`
 }
 
 function setNext() {
