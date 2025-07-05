@@ -101,7 +101,12 @@ input[type="range"] {
 /* enough width for longest note (“A♭ / G#”) without forcing huge space */
 .note-only { width: 9ch; }
 .note-display .value {
-    font-family: 'Courier New', monospace;
+    font-family: 'Consolas', 'Menlo', 'Courier New', monospace;
+    line-height: 1em;
+    height: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .note-display .label {
     font-size: 0.4em;
