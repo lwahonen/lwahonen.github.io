@@ -241,6 +241,9 @@
 <body>
     <div class="container">
         <h1>YouTube Video Player with USB Pedal Support</h1>
+        <p style="margin-top:-10px; margin-bottom:30px;">
+            <a href="notes.html" style="color:#667eea; text-decoration:none; font-weight:600;">Try the Guitar Note Trainer →</a>
+        </p>
         
         <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
         <div id="player"></div>
@@ -386,6 +389,35 @@
                 }
             },
             50);
+    </script>
+
+    <script type="text/javascript">
+        // Remove leading YAML front-matter (--- ... ---) when the page is opened directly from disk.
+        (function() {
+            if (location.protocol === 'file:' || location.hostname === '') {
+                const body = document.body;
+                // Delay execution until DOM ready in case body not yet available.
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Collect consecutive text nodes that belong to the front-matter.
+                    let node = body.firstChild;
+                    if (!node || node.nodeType !== Node.TEXT_NODE) return;
+                    const text = node.textContent;
+                    if (!text.startsWith('---')) return;
+
+                    // Concatenate possible multi-line front-matter lines.
+                    let yamlText = '';
+                    while (node && node.nodeType === Node.TEXT_NODE) {
+                        yamlText += node.textContent;
+                        const next = node.nextSibling;
+                        body.removeChild(node);
+                        if (yamlText.match(/\n---\s*$/)) {
+                            break; // reached closing delimiter
+                        }
+                        node = next;
+                    }
+                });
+            }
+        })();
     </script>
 
 </body>

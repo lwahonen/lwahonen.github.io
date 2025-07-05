@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html>
     <!-- build-commit-id: {{ site.github.build_revision }} -->
@@ -117,6 +119,9 @@ input[type="range"] {
 <body>
 <div class="container">
     <div class="title">Guitar Note Trainer</div>
+    <div style="text-align:center; margin-top:-10px; margin-bottom:20px;">
+        <a href="index.html" style="color:#4a90e2; text-decoration:none; font-size:0.9em;">← Back to main page</a>
+    </div>
     <div class="info-box">
         <div style="margin-top: 12px; font-size: 0.98em;">
             <strong>Note lists:</strong><br>
@@ -241,6 +246,25 @@ Array.from(document.getElementsByName('notemode')).forEach(radio => {
 // Initial setup
 updateDelayLabel();
 setNext();
+
+// Hide YAML front matter when viewing the raw file from disk (i.e., without Jekyll processing)
+(function() {
+    if (location.protocol === 'file:' || location.hostname === '') {
+        const body = document.body;
+        document.addEventListener('DOMContentLoaded', function () {
+            let node = body.firstChild;
+            if (!node || node.nodeType !== Node.TEXT_NODE || !node.textContent.startsWith('---')) return;
+            let yamlCollected = '';
+            while (node && node.nodeType === Node.TEXT_NODE) {
+                yamlCollected += node.textContent;
+                const next = node.nextSibling;
+                body.removeChild(node);
+                if (yamlCollected.match(/\n---\s*$/)) break;
+                node = next;
+            }
+        });
+    }
+})();
 </script>
 </body>
 </html>
