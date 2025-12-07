@@ -109,19 +109,25 @@ select:focus {
 }
 .note-chip {
     display: inline-block;
-    background: #e3eafc;
-    color: #2d3a4a;
+    color: #fff;
     border-radius: 5px;
     padding: 4px 10px;
     font-size: 0.95em;
-    border: 1px solid #b3c6e6;
+    border: none;
     font-family: inherit;
+    font-weight: 500;
 }
-.note-chip.root {
-    background: #4a90e2;
-    color: #fff;
-    border-color: #4a90e2;
-    font-weight: 600;
+.note-chip.degree-1 { background: #e53935; font-weight: 700; }
+.note-chip.degree-2 { background: #fb8c00; }
+.note-chip.degree-3 { background: #3949ab; }
+.note-chip.degree-4 { background: #8e24aa; }
+.note-chip.degree-5 { background: #43a047; }
+.note-chip.degree-6 { background: #00acc1; }
+.note-chip.degree-7 { background: #d81b60; }
+.scale-pattern {
+    font-size: 0.9em;
+    color: #666;
+    font-family: 'Consolas', 'Menlo', monospace;
 }
 
 /* Fretboard styles */
@@ -207,7 +213,7 @@ select:focus {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #4a90e2;
+    background: #888;
     color: #fff;
     display: flex;
     align-items: center;
@@ -217,10 +223,14 @@ select:focus {
     z-index: 1;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.note-dot.root {
-    background: #e24a4a;
-    transform: scale(1.15);
-}
+/* Scale degree colors */
+.degree-1 { background: #e53935; transform: scale(1.15); } /* Root - red */
+.degree-2 { background: #fb8c00; } /* 2nd - orange */
+.degree-3 { background: #3949ab; } /* 3rd - blue */
+.degree-4 { background: #8e24aa; } /* 4th - purple */
+.degree-5 { background: #43a047; } /* 5th - green */
+.degree-6 { background: #00acc1; } /* 6th - cyan */
+.degree-7 { background: #d81b60; } /* 7th - pink */
 .nut {
     border-left: 6px solid #333 !important;
 }
@@ -286,6 +296,7 @@ select:focus {
     <div class="scale-info">
         <div class="scale-name" id="scale-name"></div>
         <div id="scale-notes"></div>
+        <div class="scale-pattern" id="scale-pattern"></div>
     </div>
 
     <div class="fretboard-container">
@@ -422,8 +433,11 @@ function renderFretboard(scaleNotes, rootNote) {
     // Update grid columns dynamically
     fretboard.style.gridTemplateColumns = `30px repeat(${fretCount}, 1fr)`;
 
-    // Create a set of note indices that are in the scale
-    const scaleNoteIndices = new Set(scaleNotes.map(note => chromaticNotes.indexOf(note)));
+    // Create a map of note index to scale degree (1-based)
+    const noteToScaleDegree = {};
+    scaleNotes.forEach((note, idx) => {
+        noteToScaleDegree[chromaticNotes.indexOf(note)] = idx + 1;
+    });
 
     let html = '';
 
@@ -443,17 +457,16 @@ function renderFretboard(scaleNotes, rootNote) {
         for (let fret = startFret; fret <= endFret; fret++) {
             const noteIndex = (string.openNote + fret) % 12;
             const note = chromaticNotes[noteIndex];
-            const isInScale = scaleNoteIndices.has(noteIndex);
-            const isRoot = noteIndex === rootIndex;
+            const scaleDegree = noteToScaleDegree[noteIndex];
 
             let fretClass = 'fret';
             if (fret === startFret && startFret === 1) fretClass += ' nut';
 
             html += `<div class="${fretClass}">`;
 
-            if (isInScale) {
+            if (scaleDegree) {
                 const displayNote = note.replace('#', '\u266f');
-                html += `<div class="note-dot${isRoot ? ' root' : ''}">${displayNote}</div>`;
+                html += `<div class="note-dot degree-${scaleDegree}">${displayNote}</div>`;
             }
 
             // Add fret markers on the middle strings (G string, index 2)
@@ -494,12 +507,15 @@ function updateScale() {
 
     // Display notes
     const notesHtml = notes.map((note, index) => {
-        const isRoot = index === 0;
+        const degree = index + 1;
         const displayNote = formatNote(note);
-        return `<span class="note-chip${isRoot ? ' root' : ''}">${displayNote}</span>`;
+        return `<span class="note-chip degree-${degree}">${displayNote}</span>`;
     }).join('');
 
     document.getElementById('scale-notes').innerHTML = notesHtml;
+
+    // Display pattern
+    document.getElementById('scale-pattern').textContent = 'Pattern: ' + scale.formula;
 
     // Render fretboard
     renderFretboard(notes, key);
