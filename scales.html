@@ -238,6 +238,9 @@ select:focus {
             <div class="control-group">
                 <label for="key-select">Key</label>
                 <select id="key-select">
+                    <option value="A" selected>A</option>
+                    <option value="A#">A# / Bb</option>
+                    <option value="B">B</option>
                     <option value="C">C</option>
                     <option value="C#">C# / Db</option>
                     <option value="D">D</option>
@@ -247,9 +250,6 @@ select:focus {
                     <option value="F#">F# / Gb</option>
                     <option value="G">G</option>
                     <option value="G#">G# / Ab</option>
-                    <option value="A" selected>A</option>
-                    <option value="A#">A# / Bb</option>
-                    <option value="B">B</option>
                 </select>
             </div>
             <div class="control-group">
@@ -505,9 +505,32 @@ function updateScale() {
     renderFretboard(notes, key);
 }
 
+// localStorage helpers
+function saveSettings() {
+    const settings = {
+        key: document.getElementById('key-select').value,
+        scale: document.getElementById('scale-select').value,
+        startFret: document.getElementById('start-fret').value,
+        endFret: document.getElementById('end-fret').value
+    };
+    localStorage.setItem('scaleSettings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+    try {
+        const settings = JSON.parse(localStorage.getItem('scaleSettings'));
+        if (settings) {
+            document.getElementById('key-select').value = settings.key || 'A';
+            document.getElementById('scale-select').value = settings.scale || 'major';
+            document.getElementById('start-fret').value = settings.startFret || 1;
+            document.getElementById('end-fret').value = settings.endFret || 12;
+        }
+    } catch (e) {}
+}
+
 // Event listeners
-document.getElementById('key-select').addEventListener('change', updateScale);
-document.getElementById('scale-select').addEventListener('change', updateScale);
+document.getElementById('key-select').addEventListener('change', function() { updateScale(); saveSettings(); });
+document.getElementById('scale-select').addEventListener('change', function() { updateScale(); saveSettings(); });
 document.getElementById('start-fret').addEventListener('change', function() {
     const startVal = parseInt(this.value);
     const endSelect = document.getElementById('end-fret');
@@ -516,6 +539,7 @@ document.getElementById('start-fret').addEventListener('change', function() {
         endSelect.value = startVal;
     }
     updateScale();
+    saveSettings();
 });
 document.getElementById('end-fret').addEventListener('change', function() {
     const endVal = parseInt(this.value);
@@ -525,10 +549,12 @@ document.getElementById('end-fret').addEventListener('change', function() {
         startSelect.value = endVal;
     }
     updateScale();
+    saveSettings();
 });
 
 // Initial setup
 populateFretDropdowns();
+loadSettings();
 updateScale();
 
 // Hide YAML front matter when viewing the raw file from disk (i.e., without Jekyll processing)
