@@ -1,0 +1,554 @@
+---
+---
+<!DOCTYPE html>
+<html>
+    <!-- build-commit-id: {{ site.github.build_revision }} -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scale Reference</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f7f7fa;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 12px;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 16px;
+    overflow: hidden;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #4a90e2;
+    margin: 0;
+}
+.nav-links {
+    font-size: 0.85em;
+}
+.nav-links a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+.controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.control-group label {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+}
+select {
+    padding: 8px 12px;
+    font-size: 1em;
+    border: 2px solid #b3c6e6;
+    border-radius: 8px;
+    background: #fff;
+    color: #222;
+    cursor: pointer;
+}
+select:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+.scale-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    background: #f8f9fc;
+    border-radius: 8px;
+}
+.scale-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #4a90e2;
+    margin: 0;
+}
+#scale-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+.note-chip {
+    display: inline-block;
+    background: #e3eafc;
+    color: #2d3a4a;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 0.95em;
+    border: 1px solid #b3c6e6;
+    font-family: inherit;
+}
+.note-chip.root {
+    background: #4a90e2;
+    color: #fff;
+    border-color: #4a90e2;
+    font-weight: 600;
+}
+
+/* Fretboard styles */
+.fretboard-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+.fretboard {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto repeat(6, 1fr);
+    gap: 0;
+    background: #f5e6d3;
+    border-radius: 8px;
+    padding: 8px;
+    border: 3px solid #8b4513;
+    min-height: 0;
+}
+.fret-numbers {
+    display: contents;
+}
+.fret-number {
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #666;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.string-row {
+    display: contents;
+}
+.string-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 1em;
+}
+.fret {
+    position: relative;
+    min-height: 40px;
+    border-left: 3px solid #c0c0c0;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        transparent 45%,
+        #888 45%,
+        #888 55%,
+        transparent 55%,
+        transparent 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fret:last-child {
+    border-right: 3px solid #c0c0c0;
+}
+.fret-marker {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background: #333;
+    border-radius: 50%;
+}
+.fret-marker.double {
+    width: 8px;
+    height: 8px;
+}
+.fret-marker.double-top {
+    bottom: auto;
+    top: -10px;
+}
+.note-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #4a90e2;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85em;
+    font-weight: 600;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.note-dot.root {
+    background: #e24a4a;
+    transform: scale(1.15);
+}
+.nut {
+    border-left: 6px solid #333 !important;
+}
+@media (max-width: 600px) {
+    .header { flex-direction: column; align-items: flex-start; }
+    .note-dot { width: 28px; height: 28px; font-size: 0.7em; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="title">Scale Reference</div>
+        <div class="controls">
+            <div class="control-group">
+                <label for="key-select">Key</label>
+                <select id="key-select">
+                    <option value="C">C</option>
+                    <option value="C#">C# / Db</option>
+                    <option value="D">D</option>
+                    <option value="D#">D# / Eb</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="F#">F# / Gb</option>
+                    <option value="G">G</option>
+                    <option value="G#">G# / Ab</option>
+                    <option value="A" selected>A</option>
+                    <option value="A#">A# / Bb</option>
+                    <option value="B">B</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="scale-select">Scale</label>
+                <select id="scale-select">
+                    <option value="major">Major</option>
+                    <option value="natural_minor">Natural Minor</option>
+                    <option value="harmonic_minor">Harmonic Minor</option>
+                    <option value="melodic_minor">Melodic Minor</option>
+                    <option value="dorian">Dorian</option>
+                    <option value="phrygian">Phrygian</option>
+                    <option value="lydian">Lydian</option>
+                    <option value="mixolydian">Mixolydian</option>
+                    <option value="locrian">Locrian</option>
+                    <option value="pentatonic_major">Pentatonic Major</option>
+                    <option value="pentatonic_minor">Pentatonic Minor</option>
+                    <option value="blues">Blues</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="start-fret">Frets</label>
+                <select id="start-fret"></select>
+                <span style="color:#666;">to</span>
+                <select id="end-fret"></select>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <span style="margin: 0 6px; color:#ccc;">|</span>
+            <a href="notes.html">Note Trainer</a>
+        </div>
+    </div>
+
+    <div class="scale-info">
+        <div class="scale-name" id="scale-name"></div>
+        <div id="scale-notes"></div>
+    </div>
+
+    <div class="fretboard-container">
+        <div class="fretboard" id="fretboard"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+// All 12 chromatic notes
+const chromaticNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+// Flat equivalents for display
+const flatEquivalents = {
+    'C#': 'Db',
+    'D#': 'Eb',
+    'F#': 'Gb',
+    'G#': 'Ab',
+    'A#': 'Bb'
+};
+
+// Scale intervals (semitones from root)
+const scales = {
+    major: {
+        name: 'Major',
+        intervals: [0, 2, 4, 5, 7, 9, 11],
+        formula: 'W-W-H-W-W-W-H'
+    },
+    natural_minor: {
+        name: 'Natural Minor',
+        intervals: [0, 2, 3, 5, 7, 8, 10],
+        formula: 'W-H-W-W-H-W-W'
+    },
+    harmonic_minor: {
+        name: 'Harmonic Minor',
+        intervals: [0, 2, 3, 5, 7, 8, 11],
+        formula: 'W-H-W-W-H-W+H-H'
+    },
+    melodic_minor: {
+        name: 'Melodic Minor (ascending)',
+        intervals: [0, 2, 3, 5, 7, 9, 11],
+        formula: 'W-H-W-W-W-W-H'
+    },
+    dorian: {
+        name: 'Dorian',
+        intervals: [0, 2, 3, 5, 7, 9, 10],
+        formula: 'W-H-W-W-W-H-W'
+    },
+    phrygian: {
+        name: 'Phrygian',
+        intervals: [0, 1, 3, 5, 7, 8, 10],
+        formula: 'H-W-W-W-H-W-W'
+    },
+    lydian: {
+        name: 'Lydian',
+        intervals: [0, 2, 4, 6, 7, 9, 11],
+        formula: 'W-W-W-H-W-W-H'
+    },
+    mixolydian: {
+        name: 'Mixolydian',
+        intervals: [0, 2, 4, 5, 7, 9, 10],
+        formula: 'W-W-H-W-W-H-W'
+    },
+    locrian: {
+        name: 'Locrian',
+        intervals: [0, 1, 3, 5, 6, 8, 10],
+        formula: 'H-W-W-H-W-W-W'
+    },
+    pentatonic_major: {
+        name: 'Pentatonic Major',
+        intervals: [0, 2, 4, 7, 9],
+        formula: 'W-W-W+H-W-W+H'
+    },
+    pentatonic_minor: {
+        name: 'Pentatonic Minor',
+        intervals: [0, 3, 5, 7, 10],
+        formula: 'W+H-W-W-W+H-W'
+    },
+    blues: {
+        name: 'Blues',
+        intervals: [0, 3, 5, 6, 7, 10],
+        formula: 'W+H-W-H-H-W+H-W'
+    }
+};
+
+function getNoteName(rootIndex, interval) {
+    const noteIndex = (rootIndex + interval) % 12;
+    return chromaticNotes[noteIndex];
+}
+
+function formatNote(note) {
+    if (flatEquivalents[note]) {
+        return note + ' / ' + flatEquivalents[note];
+    }
+    return note;
+}
+
+// Guitar tuning: string 6 (low E) to string 1 (high E)
+// Open string notes as chromatic indices
+const guitarStrings = [
+    { name: 'e', openNote: 4 },  // High E (string 1)
+    { name: 'B', openNote: 11 }, // B (string 2)
+    { name: 'G', openNote: 7 },  // G (string 3)
+    { name: 'D', openNote: 2 },  // D (string 4)
+    { name: 'A', openNote: 9 },  // A (string 5)
+    { name: 'E', openNote: 4 }   // Low E (string 6)
+];
+
+// Frets with position markers
+const markerFrets = [3, 5, 7, 9, 15, 17, 19, 21];
+const doubleMarkerFrets = [12, 24];
+const MAX_FRET = 24;
+
+// Populate fret dropdowns
+function populateFretDropdowns() {
+    const startFret = document.getElementById('start-fret');
+    const endFret = document.getElementById('end-fret');
+
+    for (let i = 1; i <= MAX_FRET; i++) {
+        startFret.options.add(new Option(i, i));
+        endFret.options.add(new Option(i, i));
+    }
+
+    startFret.value = 1;
+    endFret.value = 12;
+}
+
+function renderFretboard(scaleNotes, rootNote) {
+    const fretboard = document.getElementById('fretboard');
+    const rootIndex = chromaticNotes.indexOf(rootNote);
+    const startFret = parseInt(document.getElementById('start-fret').value);
+    const endFret = parseInt(document.getElementById('end-fret').value);
+    const fretCount = endFret - startFret + 1;
+
+    // Update grid columns dynamically
+    fretboard.style.gridTemplateColumns = `30px repeat(${fretCount}, 1fr)`;
+
+    // Create a set of note indices that are in the scale
+    const scaleNoteIndices = new Set(scaleNotes.map(note => chromaticNotes.indexOf(note)));
+
+    let html = '';
+
+    // Fret numbers row
+    html += '<div class="fret-numbers">';
+    html += '<div class="fret-number"></div>'; // Empty cell for string labels
+    for (let fret = startFret; fret <= endFret; fret++) {
+        html += `<div class="fret-number">${fret}</div>`;
+    }
+    html += '</div>';
+
+    // Render each string
+    guitarStrings.forEach((string, stringIndex) => {
+        html += '<div class="string-row">';
+        html += `<div class="string-label">${string.name}</div>`;
+
+        for (let fret = startFret; fret <= endFret; fret++) {
+            const noteIndex = (string.openNote + fret) % 12;
+            const note = chromaticNotes[noteIndex];
+            const isInScale = scaleNoteIndices.has(noteIndex);
+            const isRoot = noteIndex === rootIndex;
+
+            let fretClass = 'fret';
+            if (fret === startFret && startFret === 1) fretClass += ' nut';
+
+            html += `<div class="${fretClass}">`;
+
+            if (isInScale) {
+                const displayNote = note.replace('#', '\u266f');
+                html += `<div class="note-dot${isRoot ? ' root' : ''}">${displayNote}</div>`;
+            }
+
+            // Add fret markers on the middle strings (G string, index 2)
+            if (stringIndex === 2 && markerFrets.includes(fret) && !doubleMarkerFrets.includes(fret)) {
+                html += '<div class="fret-marker"></div>';
+            }
+
+            // Double markers on 12th and 24th fret (on B and A strings)
+            if (doubleMarkerFrets.includes(fret)) {
+                if (stringIndex === 1) {
+                    html += '<div class="fret-marker double double-top"></div>';
+                }
+                if (stringIndex === 4) {
+                    html += '<div class="fret-marker double"></div>';
+                }
+            }
+
+            html += '</div>';
+        }
+
+        html += '</div>';
+    });
+
+    fretboard.innerHTML = html;
+}
+
+function updateScale() {
+    const key = document.getElementById('key-select').value;
+    const scaleType = document.getElementById('scale-select').value;
+    const scale = scales[scaleType];
+
+    const rootIndex = chromaticNotes.indexOf(key);
+    const notes = scale.intervals.map(interval => getNoteName(rootIndex, interval));
+
+    // Display scale name
+    const keyDisplay = flatEquivalents[key] ? key + ' / ' + flatEquivalents[key] : key;
+    document.getElementById('scale-name').textContent = keyDisplay + ' ' + scale.name;
+
+    // Display notes
+    const notesHtml = notes.map((note, index) => {
+        const isRoot = index === 0;
+        const displayNote = formatNote(note);
+        return `<span class="note-chip${isRoot ? ' root' : ''}">${displayNote}</span>`;
+    }).join('');
+
+    document.getElementById('scale-notes').innerHTML = notesHtml;
+
+    // Render fretboard
+    renderFretboard(notes, key);
+}
+
+// Event listeners
+document.getElementById('key-select').addEventListener('change', updateScale);
+document.getElementById('scale-select').addEventListener('change', updateScale);
+document.getElementById('start-fret').addEventListener('change', function() {
+    const startVal = parseInt(this.value);
+    const endSelect = document.getElementById('end-fret');
+    const endVal = parseInt(endSelect.value);
+    if (endVal < startVal) {
+        endSelect.value = startVal;
+    }
+    updateScale();
+});
+document.getElementById('end-fret').addEventListener('change', function() {
+    const endVal = parseInt(this.value);
+    const startSelect = document.getElementById('start-fret');
+    const startVal = parseInt(startSelect.value);
+    if (startVal > endVal) {
+        startSelect.value = endVal;
+    }
+    updateScale();
+});
+
+// Initial setup
+populateFretDropdowns();
+updateScale();
+
+// Hide YAML front matter when viewing the raw file from disk (i.e., without Jekyll processing)
+(function() {
+    if (location.protocol === 'file:' || location.hostname === '') {
+        const body = document.body;
+        document.addEventListener('DOMContentLoaded', function () {
+            let node = body.firstChild;
+            if (!node || node.nodeType !== Node.TEXT_NODE || !node.textContent.startsWith('---')) return;
+            let yamlCollected = '';
+            while (node && node.nodeType === Node.TEXT_NODE) {
+                yamlCollected += node.textContent;
+                const next = node.nextSibling;
+                body.removeChild(node);
+                if (yamlCollected.match(/\n---\s*$/)) break;
+                node = next;
+            }
+        });
+    }
+})();
+</script>
+</body>
+</html>
