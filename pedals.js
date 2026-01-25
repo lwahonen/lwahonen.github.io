@@ -1,5 +1,5 @@
 var deviceIsOpen = false;
-var videoId = null;
+var videoId = "1SLr62VBBjw";
 var player = null;
 
 function loadVideo() {
