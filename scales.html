@@ -173,6 +173,24 @@ select:focus {
     color: #333;
     font-size: 1em;
 }
+.string-label .open-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+.string-label .open-marker.degree-1 { background: #e53935; }
+.string-label .open-marker.degree-2 { background: #fb8c00; }
+.string-label .open-marker.degree-3 { background: #3949ab; }
+.string-label .open-marker.degree-4 { background: #8e24aa; }
+.string-label .open-marker.degree-5 { background: #43a047; }
+.string-label .open-marker.degree-6 { background: #00acc1; }
+.string-label .open-marker.degree-7 { background: #d81b60; }
 .fret {
     position: relative;
     min-height: 40px;
@@ -452,7 +470,11 @@ function renderFretboard(scaleNotes, rootNote) {
     // Render each string
     guitarStrings.forEach((string, stringIndex) => {
         html += '<div class="string-row">';
-        html += `<div class="string-label">${string.name}</div>`;
+        const openStringDegree = noteToScaleDegree[string.openNote];
+        const labelContent = openStringDegree
+            ? `<span class="open-marker degree-${openStringDegree}">${string.name}</span>`
+            : string.name;
+        html += `<div class="string-label">${labelContent}</div>`;
 
         for (let fret = startFret; fret <= endFret; fret++) {
             const noteIndex = (string.openNote + fret) % 12;
