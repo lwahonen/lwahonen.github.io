@@ -492,7 +492,7 @@ function renderFretboard(scaleNotes, rootNote, functions) {
         html += '<div class="string-row">';
         const openStringDegree = noteToScaleDegree[string.openNote];
         const labelContent = openStringDegree
-            ? `<span class="open-marker degree-${openStringDegree}">${string.name}</span>`
+            ? `<span class="open-marker degree-${openStringDegree}">${showFunctions ? functions[openStringDegree - 1] : string.name}</span>`
             : string.name;
         html += `<div class="string-label">${labelContent}</div>`;
 
